@@ -1,9 +1,7 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/SilentOT_HLS.dir/PRNG.cpp.obj"
-  "CMakeFiles/SilentOT_HLS.dir/main.cpp.obj"
-  "SilentOT_HLS.exe"
-  "SilentOT_HLS.exe.manifest"
-  "SilentOT_HLS.lib"
+  "CMakeFiles/SilentOT_HLS.dir/PRNG.cpp.o"
+  "CMakeFiles/SilentOT_HLS.dir/main.cpp.o"
+  "SilentOT_HLS"
   "SilentOT_HLS.pdb"
 )
 

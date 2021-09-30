@@ -8,14 +8,13 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "F:/SilentOT_HLS/PRNG.cpp" "F:/SilentOT_HLS/cmake-build-debug/CMakeFiles/SilentOT_HLS.dir/PRNG.cpp.obj"
-  "F:/SilentOT_HLS/main.cpp" "F:/SilentOT_HLS/cmake-build-debug/CMakeFiles/SilentOT_HLS.dir/main.cpp.obj"
+  "/home/mgalaxy/workspace/SilentOT_HLS/PRNG.cpp" "/home/mgalaxy/workspace/SilentOT_HLS/cmake-build-debug/CMakeFiles/SilentOT_HLS.dir/PRNG.cpp.o"
+  "/home/mgalaxy/workspace/SilentOT_HLS/main.cpp" "/home/mgalaxy/workspace/SilentOT_HLS/cmake-build-debug/CMakeFiles/SilentOT_HLS.dir/main.cpp.o"
   )
-set(CMAKE_CXX_COMPILER_ID "MSVC")
+set(CMAKE_CXX_COMPILER_ID "GNU")
 
 # The include file search paths:
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
-  "E:/intelFPGA_lite/19.1/hls/include"
   )
 
 # The set of dependency files which are needed:
