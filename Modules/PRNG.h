@@ -5,7 +5,7 @@
 #ifndef SILENTOT_HLS_PRNG_H
 #define SILENTOT_HLS_PRNG_H
 
-#include "Defines.h"
+#include "../Defines.h"
 
 
 class PRNG {
