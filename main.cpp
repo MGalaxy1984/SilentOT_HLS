@@ -10,10 +10,7 @@ typedef struct {
 } block;
 
 int main() {
-    uint32_t a = 60;
-    uint32_t b = 55;
-    uint32_t c = a ^ b;
-    cout << "Hello, World HIIII!" << c << endl;
-    vector<array<block, 2>> message;
+    long long int a = 10;
+    cout << sizeof a << endl;
     return 0;
 }
