@@ -1,8 +1,9 @@
 #include <iostream>
 #include <array>
 #include <vector>
+#include "Debug/DebugPrint.h"
 
-using namespace std;
+//using namespace std;
 
 typedef struct {
     uint64_t data0;
@@ -10,7 +11,8 @@ typedef struct {
 } block;
 
 int main() {
-    long long int a = 10;
-    cout << sizeof a << endl;
+    std::vector<uint64_t> a(19);
+    std::cout << a.size() << std::endl;
+    printU8Binary(100);
     return 0;
 }

@@ -8,6 +8,7 @@
 #include <cstdint>
 
 #define NUMBER_OF_OT 2
+#define NUMBER_OF_MSG_BYTES 16
 
 typedef uint8_t u8;
 typedef uint16_t u16;
