@@ -2,6 +2,7 @@
 #include <array>
 #include <vector>
 #include "Debug/DebugPrint.h"
+#include "ModuleReference/AESReference.h"
 
 //using namespace std;
 
@@ -11,8 +12,7 @@ typedef struct {
 } block;
 
 int main() {
-    std::vector<uint64_t> a(19);
-    std::cout << a.size() << std::endl;
-    printU8Binary(100);
+    AESReference a;
+    a.test();
     return 0;
 }

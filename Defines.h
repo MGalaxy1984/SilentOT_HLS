@@ -6,6 +6,7 @@
 #define SILENTOT_HLS_DEFINES_H
 
 #include <cstdint>
+#include <array>
 
 #define NUMBER_OF_OT 2
 #define NUMBER_OF_MSG_BYTES 16
