@@ -15,4 +15,6 @@ void printMessage();
 void printU8Binary(u8);
 
 
+
+
 #endif //SILENTOT_HLS_DEBUGPRINT_H
