@@ -12,32 +12,20 @@
 
 class block {
 private:
-    std::array<u8, 16> data{};
-    __m128i data2;
+    __m128i data;
 public:
 
-    block() {
-        for (u8 element : data) {
-            element = 0;
-        }
-    }
+    block() = default;
 
-    block(const block& ref) {
-        for (int i = 0; i < 16; i++) {
-            data[i] = ref.data[i];
-        }
-    }
-
-    block(const u64 data_higher, const u64 data_lower) {
-        for (int i = 0; i < 8; i++) {
-            data[i] = (u8)((data_higher >> ((7 - i) * 8)) & 0xFF);
-        }
-        for (int i = 0; i < 8; i++) {
-            data[i + 8] = (u8)((data_lower >> ((7 - i) * 8)) & 0xFF);
-        }
+    block(const u64 data1, const u64 data2) {
+        data = _mm_set_epi64x(data1, data2);
     }
 
     block& operator^ (const block& op);
+
+    explicit operator __m128i& () {
+        return data;
+    }
 
 };
 

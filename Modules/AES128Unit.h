@@ -8,15 +8,18 @@
 #include <array>
 #include "../Defines.h"
 #include "../Common/block.h"
+#include "wmmintrin.h"
 
 class AES128Unit {
-    std::array<block, 11> roundKeys;
+    std::array<__m128i, 11> roundKeys;
 
     AES128Unit() = default;
 
-    AES128Unit(const block& userKey) {
-        roundKeys[0] = block(userKey);
+    static __m128i keyGenerate(__m128i previousKey, __m128i parameter);
 
+    AES128Unit(const __m128i& userKey) {
+        roundKeys[0] = userKey;
+        roundKeys[1] = keyGenerate(roundKeys[0], _mm_aeskeygenassist_si128(roundKeys[0], 0x01));
     }
 };
 

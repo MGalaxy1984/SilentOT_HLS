@@ -3,8 +3,10 @@
 #include <vector>
 #include "Debug/DebugPrint.h"
 #include "ModuleReference/AESReference.h"
+#include "Defines.h"
+#include "wmmintrin.h"
 
-//using namespace std;
+using namespace std;
 
 typedef struct {
     uint64_t data0;
@@ -12,7 +14,7 @@ typedef struct {
 } block;
 
 int main() {
-    AESReference a;
-    a.test();
+    __m128i a = _mm_set_epi64x(10, 0);
+    cout << sizeof a << endl;
     return 0;
 }
