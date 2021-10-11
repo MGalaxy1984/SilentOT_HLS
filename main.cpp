@@ -3,18 +3,21 @@
 #include <vector>
 #include "Debug/DebugPrint.h"
 #include "ModuleReference/AESReference.h"
+#include "Modules/AES128Unit.h"
 #include "Defines.h"
 #include "wmmintrin.h"
+//#include "ThirdParty/cryptopp/cryptlib.h"
+//#include "ThirdParty/cryptopp/rijndael.h"
+//#include "ThirdParty/cryptopp/modes.h"
+//#include "ThirdParty/cryptopp/files.h"
+//#include "ThirdParty/cryptopp/osrng.h"
+//#include "ThirdParty/cryptopp/hex.h"
 
 using namespace std;
 
-typedef struct {
-    uint64_t data0;
-    uint64_t data1;
-} block;
-
 int main() {
-    __m128i a = _mm_set_epi64x(10, 0);
-    cout << sizeof a << endl;
+    int a = _MM_SHUFFLE(3, 3, 3, 3);
+    cout << a << endl;
+    AES128Unit(_mm_set_epi64x(0, 0));
     return 0;
 }
