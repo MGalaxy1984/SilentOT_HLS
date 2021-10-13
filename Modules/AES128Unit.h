@@ -64,7 +64,19 @@ word subWord(word &inputWord);
  * @param key the key user chooses
  * @param w the place to store expanded key
  */
-void KeyExpansion(byte key[4 * Nk], word w[4 * (Nr + 1)]);
+void KeyExpansion(byte key[4 * Nk], word roundKeys[4 * (Nr + 1)]);
+
+void subBytes(word input[4]);
+
+void shiftRows(word input[4]);
+
+void mixColumns(word input[4]);
+
+/**
+ * COMPONENT
+ * The component for AES encryption
+ */
+void AESEncryption(word plaintext[4], word ciphertext[4], word roundKeys[4 * (Nr + 1)]);
 
 
 #endif //SILENTOT_HLS_AES128UNIT_H

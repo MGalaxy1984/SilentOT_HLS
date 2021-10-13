@@ -26,25 +26,41 @@ word subWord(word &inputWord) {
     return tmp;
 }
 
-void KeyExpansion(byte key[4 * Nk], word w[4 * (Nr + 1)]) {
+void KeyExpansion(byte key[4 * Nk], word roundKeys[4 * (Nr + 1)]) {
     word tmp;
     int i;
 
     // the first 4 words are equivalent to the input user key
     for (i = 0; i < Nk; i++) {
-        w[i] = setWord(key[4 * i], key[4 * i + 1], key[4 * i + 2], key[4 * i + 3]);
+        roundKeys[i] = setWord(key[4 * i], key[4 * i + 1], key[4 * i + 2], key[4 * i + 3]);
     }
 
     for (i = Nk; i < 4 * (Nr + 1); i++) {
-        tmp = w[i - 1]; // record the previous word
+        tmp = roundKeys[i - 1]; // record the previous word
         if (i % Nk == 0) {
             tmp = rotWord(tmp);
             tmp = subWord(tmp);
             tmp[0] ^= keyRcon[i / 4];
         }
-        w[i][0] = w[i - 4][0] ^ tmp[0];
-        w[i][1] = w[i - 4][1] ^ tmp[1];
-        w[i][2] = w[i - 4][2] ^ tmp[2];
-        w[i][3] = w[i - 4][3] ^ tmp[3];
+        roundKeys[i][0] = roundKeys[i - 4][0] ^ tmp[0];
+        roundKeys[i][1] = roundKeys[i - 4][1] ^ tmp[1];
+        roundKeys[i][2] = roundKeys[i - 4][2] ^ tmp[2];
+        roundKeys[i][3] = roundKeys[i - 4][3] ^ tmp[3];
     }
+}
+
+void AESEncryption(word plaintext[4], word ciphertext[4], word roundKeys[4 * (Nr + 1)]) {
+
+}
+
+void subBytes(word *input) {
+
+}
+
+void shiftRows(word *input) {
+
+}
+
+void mixColumns(word *input) {
+
 }
