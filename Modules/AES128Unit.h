@@ -6,14 +6,16 @@
 #define SILENTOT_HLS_AES128UNIT_H
 
 #pragma once
+
 #include <array>
 #include <bitset>
 
 // 8-bit bitset
 typedef std::bitset<8> byte;
 
-// 32-bit bitset
-typedef std::bitset<32> word;
+// 4 element array of byte (8-bit bitset)
+//typedef std::bitset<32> word;
+typedef std::array<byte, 4> word;
 
 // The length of key related to 32-bit, in 128-bit key, Nk = 4
 const int Nk = 4;
@@ -21,8 +23,8 @@ const int Nk = 4;
 // The round of encryption, in 128-bit, Nr = 10
 const int Nr = 10;
 
-static const word keyRcon[10] = {0x01000000, 0x02000000, 0x04000000, 0x08000000, 0x10000000,
-                                 0x20000000, 0x40000000, 0x80000000, 0x1b000000, 0x36000000};
+static const byte keyRcon[11] = {
+        0x8d, 0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80, 0x1b, 0x36};
 
 static const byte SBox[256] = {
         //0     1    2      3     4    5     6     7      8    9     A      B    C     D     E     F

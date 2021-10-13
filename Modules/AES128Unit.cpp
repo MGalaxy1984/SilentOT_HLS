@@ -1,60 +1,50 @@
 #include "AES128Unit.h"
 
 word setWord(byte &k1, byte &k2, byte &k3, byte &k4) {
-    word result(0x00000000);
-    word tmp;
-    tmp = k1.to_ulong();  // K1
-    tmp <<= 24;
-    result |= tmp;
-    tmp = k2.to_ulong();  // K2
-    tmp <<= 16;
-    result |= tmp;
-    tmp = k3.to_ulong();  // K3
-    tmp <<= 8;
-    result |= tmp;
-    tmp = k4.to_ulong();  // K4
-    result |= tmp;
+    word result{};
+    result[0] = byte(k1);
+    result[1] = byte(k2);
+    result[2] = byte(k3);
+    result[3] = byte(k4);
     return result;
 }
 
 word rotWord(word &inputWord) {
-    word high24 = inputWord << 8;
-    word low8 = inputWord >> 24;
-    return high24 | low8;
+    word result{};
+    result[0] = inputWord[1];
+    result[1] = inputWord[2];
+    result[2] = inputWord[3];
+    result[3] = inputWord[0];
+    return result;
 }
 
 word subWord(word &inputWord) {
     word tmp;
-    for (int i = 0; i < 32; i += 8) {
-        int row = inputWord[i + 7] * 8 + inputWord[i + 6] * 4 + inputWord[i + 5] * 2 + inputWord[i + 4];
-        int col = inputWord[i + 3] * 8 + inputWord[i + 2] * 4 + inputWord[i + 1] * 2 + inputWord[i];
-        byte val = SBox[row][col];
-        for (int j = 0; j < 8; ++j)
-            tmp[i + j] = val[j];
+    for (int i = 0; i < 4; i++) {
+        tmp[i] = SBox[(int) (inputWord[i].to_ulong())];
     }
     return tmp;
 }
 
 void KeyExpansion(byte key[4 * Nk], word w[4 * (Nr + 1)]) {
     word tmp;
-    int i = 0;
+    int i;
 
-    // the first 4 bytes are equivalent to the input user key
-    while (i < Nk) {
+    // the first 4 words are equivalent to the input user key
+    for (i = 0; i < Nk; i++) {
         w[i] = setWord(key[4 * i], key[4 * i + 1], key[4 * i + 2], key[4 * i + 3]);
-        ++i;
     }
 
-    i = Nk;
-
-    while (i < 4 * (Nr + 1)) {
+    for (i = Nk; i < 4 * (Nr + 1); i++) {
         tmp = w[i - 1]; // record the previous word
         if (i % Nk == 0) {
-            word rotatedWord = rotWord(tmp);
-            w[i] = w[i - Nk] ^ subWord(rotatedWord) ^ keyRcon[i / Nk - 1];
-        } else {
-            w[i] = w[i - Nk] ^ tmp;
+            tmp = rotWord(tmp);
+            tmp = subWord(tmp);
+            tmp[0] ^= keyRcon[i / 4];
         }
-        ++i;
+        w[i][0] = w[i - 4][0] ^ tmp[0];
+        w[i][1] = w[i - 4][1] ^ tmp[1];
+        w[i][2] = w[i - 4][2] ^ tmp[2];
+        w[i][3] = w[i - 4][3] ^ tmp[3];
     }
 }
