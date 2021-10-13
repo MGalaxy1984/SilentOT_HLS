@@ -1,23 +1,25 @@
 #include <iostream>
-#include <array>
-#include <vector>
-#include "Debug/DebugPrint.h"
-#include "ModuleReference/AESReference.h"
+//#include "Debug/DebugPrint.h"
 #include "Modules/AES128Unit.h"
-#include "Defines.h"
-#include "wmmintrin.h"
-//#include "ThirdParty/cryptopp/cryptlib.h"
-//#include "ThirdParty/cryptopp/rijndael.h"
-//#include "ThirdParty/cryptopp/modes.h"
-//#include "ThirdParty/cryptopp/files.h"
-//#include "ThirdParty/cryptopp/osrng.h"
-//#include "ThirdParty/cryptopp/hex.h"
-
-using namespace std;
+//#include "Defines.h"
 
 int main() {
-    int a = _MM_SHUFFLE(3, 3, 3, 3);
-    cout << a << endl;
-    AES128Unit(_mm_set_epi64x(0, 0));
+    byte key[16] = {0x00, 0x00, 0x00, 0x00,
+                    0x00, 0x00, 0x00, 0x00,
+                    0x00, 0x00, 0x00, 0x00,
+                    0x00, 0x89, 0x3c, 0x39};
+
+    word w[4*(Nr+1)];
+
+    std::cout << "KEY IS: ";
+    for(int i=0; i<16; ++i)
+        std::cout << std::hex << key[i].to_ulong() << " ";
+    std::cout << std::endl;
+
+    KeyExpansion(key, w);
+    for(int i=0; i<4*(Nr+1); ++i) {
+        std::cout << "w[" << std::dec << i << "] = " << std::hex << w[i].to_ulong() << std::endl;
+    }
+
     return 0;
 }

@@ -7,6 +7,7 @@
 
 #include <cstdint>
 #include <array>
+#include <bitset>
 
 #define NUMBER_OF_OT 2
 #define NUMBER_OF_MSG_BYTES 16
