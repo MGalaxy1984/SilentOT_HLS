@@ -53,8 +53,12 @@ void AESEncryption(word plaintext[4], word ciphertext[4], word roundKeys[4 * (Nr
 
 }
 
-void subBytes(word *input) {
-
+void subBytes(word input[Nk]) {
+    for (int i = 0; i < Nk; i++) {
+        for (int j = 0; j < 4; j++) {
+            input[i][j] = SBox[(int)(input[i][j].to_ulong())];
+        }
+    }
 }
 
 void shiftRows(word *input) {
