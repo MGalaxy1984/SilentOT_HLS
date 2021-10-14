@@ -49,22 +49,85 @@ void KeyExpansion(byte key[4 * Nk], word roundKeys[4 * (Nr + 1)]) {
     }
 }
 
-void AESEncryption(word plaintext[4], word ciphertext[4], word roundKeys[4 * (Nr + 1)]) {
-
-}
-
 void subBytes(word input[Nk]) {
     for (int i = 0; i < Nk; i++) {
         for (int j = 0; j < 4; j++) {
-            input[i][j] = SBox[(int)(input[i][j].to_ulong())];
+            input[i][j] = SBox[(int) (input[i][j].to_ulong())];
         }
     }
 }
 
-void shiftRows(word *input) {
+void shiftRows(word input[Nk]) {
+    byte tmp;
+    // the first row doesn't shift
+    tmp = input[1][0];
+    input[1][0] = input[1][1];
+    input[1][1] = input[1][2];
+    input[1][2] = input[1][3];
+    input[1][3] = tmp;
 
+    tmp = input[2][0];
+    input[2][0] = input[2][2];
+    input[2][2] = tmp;
+    tmp = input[2][1];
+    input[2][1] = input[2][3];
+    input[2][3] = tmp;
+
+    tmp = input[3][3];
+    input[1][3] = input[1][2];
+    input[1][2] = input[1][1];
+    input[1][1] = input[1][0];
+    input[1][0] = tmp;
 }
 
-void mixColumns(word *input) {
+inline uint8_t xTime(uint8_t x) {
+    return ((x << 1) ^ (((x >> 7) & 1) * 0x1b));
+}
+
+inline byte xTime(byte xByte) {
+    auto x = (uint8_t)(xByte.to_ulong());
+    return ((x << 1) ^ (((x >> 7) & 1) * 0x1b));
+}
+
+inline byte Multiply(byte xByte, byte yByte) {
+    auto x = (uint8_t) xByte.to_ulong();
+    auto y = (uint8_t) yByte.to_ulong();
+    uint8_t result =
+            (((y & 1) * x) ^
+             ((y >> 1 & 1) * xTime(x)) ^
+             ((y >> 2 & 1) * xTime(xTime(x))) ^
+             ((y >> 3 & 1) * xTime(xTime(xTime(x)))) ^
+             ((y >> 4 & 1) * xTime(xTime(xTime(xTime(x)))))); /* this last call to xTime() can be omitted */
+    return {result};
+}
+
+void mixColumns(word input[4]) {
+    uint8_t i;
+    byte tmp1, tmp2, t;
+    for (i = 0; i < 4; ++i)
+    {
+        t = input[i][0];
+        tmp1 = input[i][0] ^ input[i][1] ^ input[i][2] ^ input[i][3];
+        tmp2 = input[i][0] ^ input[i][1]; tmp2 = xTime(tmp2); input[i][0] ^= tmp2 ^ tmp1;
+        tmp2 = input[i][1] ^ input[i][2]; tmp2 = xTime(tmp2); input[i][1] ^= tmp2 ^ tmp1;
+        tmp2 = input[i][2] ^ input[i][3]; tmp2 = xTime(tmp2); input[i][2] ^= tmp2 ^ tmp1;
+        tmp2 = input[i][3] ^ t; tmp2 = xTime(tmp2); input[i][3] ^= tmp2 ^ tmp1;
+    }
+}
+
+word wordXOR(word& w1, word& w2) {
+    word result;
+    result[0] = w1[0] ^ w2[0];
+    result[1] = w1[1] ^ w2[1];
+    result[2] = w1[2] ^ w2[2];
+    result[3] = w1[3] ^ w2[3];
+    return result;
+}
+
+void AESEncryption(word plaintext[4], word ciphertext[4], word roundKeys[4 * (Nr + 1)]) {
+    ciphertext[0] = wordXOR(ciphertext[0], roundKeys[0]);
+    ciphertext[1] = wordXOR(ciphertext[1], roundKeys[1]);
+    ciphertext[2] = wordXOR(ciphertext[2], roundKeys[2]);
+    ciphertext[3] = wordXOR(ciphertext[3], roundKeys[3]);
 
 }
