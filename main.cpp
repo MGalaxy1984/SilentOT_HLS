@@ -1,10 +1,10 @@
 #include <iostream>
-//#include "Debug/DebugPrint.h"
 #include "Modules/AES128Unit.h"
+#include "Debug/DebugPrint.h"
 //#include "Defines.h"
 
 int main() {
-    byte key[16] = {0x11, 0x00, 0x00, 0x00,
+    byte key[16] = {0xab, 0x00, 0x00, 0x00,
                     0x00, 0x00, 0x00, 0x00,
                     0x00, 0x00, 0x00, 0x00,
                     0x00, 0x00, 0x00, 0x11};
@@ -18,8 +18,8 @@ int main() {
 
     KeyExpansion(key, roundKeys);
     for (int i = 0; i < 4 * (Nr + 1); ++i) {
-
-            std::cout << "roundKeys[" << std::dec << i << "] = " << std::hex << roundKeys[i][0].to_ulong() << roundKeys[i][1].to_ulong() << roundKeys[i][2].to_ulong() << roundKeys[i][3].to_ulong() << std::endl;
+        std::cout << "roundKeys[" << std::dec << i << "] = ";
+        printWord(roundKeys[i]);
     }
 
     word plaintext[4] = {{0x00, 0x00, 0x00, 0x00},
@@ -30,12 +30,11 @@ int main() {
 
     AESEncryption(plaintext, ciphertext, roundKeys);
 
-//    for (int i = 0; i < 4; i++) {
-//        std::cout << "ciphertext[" << i << "]: ";
-//        std::cout << std::hex << ciphertext[i][0].to_ulong() << ciphertext[i][1].to_ulong()
-//                  << ciphertext[i][2].to_ulong() << ciphertext[i][3].to_ulong();
-//        std::cout << std::endl;
-//    }
+    std::cout << "Encrypted Word" << std::endl;
+    for (int i = 0; i < 4; i++) {
+        std::cout << "ciphertext[" << i << "]: ";
+        printWord(ciphertext[i]);
+    }
 
     return 0;
 }

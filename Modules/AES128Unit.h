@@ -7,9 +7,9 @@
 
 #pragma once
 
-#include "iostream"
 #include <array>
 #include <bitset>
+#include "../Debug/DebugPrint.h"
 
 // 8-bit bitset
 typedef std::bitset<8> byte;

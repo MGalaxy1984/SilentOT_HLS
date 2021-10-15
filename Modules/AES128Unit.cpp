@@ -125,7 +125,7 @@ word wordXOR(word &w1, word &w2) {
     word result;
     result[0] = w1[0] ^ w2[0];
     result[1] = w1[1] ^ w2[1];
-    result[2] = w1[2] ^ w2[2];
+    result[2] =w1[2] ^ w2[2];
     result[3] = w1[3] ^ w2[3];
     return result;
 }
@@ -139,9 +139,7 @@ void AESEncryption(word plaintext[4], word ciphertext[4], word roundKeys[4 * (Nr
     std::cout << "Round #" << 0 << std::endl;
     for (int j = 0; j < 4; j++) {
         std::cout << "ciphertext[" << j << "]: ";
-        std::cout << std::hex << ciphertext[j][0].to_ulong() << ciphertext[j][1].to_ulong()
-                  << ciphertext[j][2].to_ulong() << ciphertext[j][3].to_ulong();
-        std::cout << std::endl;
+        printWord(ciphertext[j]);
     }
 
     for (int i = 1; i < Nr; i++) {
@@ -155,9 +153,7 @@ void AESEncryption(word plaintext[4], word ciphertext[4], word roundKeys[4 * (Nr
         std::cout << "Round #" << i << std::endl;
         for (int j = 0; j < 4; j++) {
             std::cout << "ciphertext[" << j << "]: ";
-            std::cout << std::hex << ciphertext[j][0].to_ulong() << ciphertext[j][1].to_ulong()
-                      << ciphertext[j][2].to_ulong() << ciphertext[j][3].to_ulong();
-            std::cout << std::endl;
+            printWord(ciphertext[j]);
         }
     }
 
@@ -167,4 +163,10 @@ void AESEncryption(word plaintext[4], word ciphertext[4], word roundKeys[4 * (Nr
     ciphertext[1] = wordXOR(ciphertext[1], roundKeys[Nr * 4 + 1]);
     ciphertext[2] = wordXOR(ciphertext[2], roundKeys[Nr * 4 + 2]);
     ciphertext[3] = wordXOR(ciphertext[3], roundKeys[Nr * 4 + 3]);
+
+    std::cout << "Round #10" << std::endl;
+    for (int j = 0; j < 4; j++) {
+        std::cout << "ciphertext[" << j << "]: ";
+        printWord(ciphertext[j]);
+    }
 }
