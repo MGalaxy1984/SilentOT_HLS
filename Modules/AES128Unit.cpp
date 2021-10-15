@@ -85,7 +85,7 @@ inline uint8_t xTime(uint8_t x) {
 }
 
 inline byte xTime(byte xByte) {
-    auto x = (uint8_t)(xByte.to_ulong());
+    auto x = (uint8_t) (xByte.to_ulong());
     return ((x << 1) ^ (((x >> 7) & 1) * 0x1b));
 }
 
@@ -102,20 +102,26 @@ inline byte Multiply(byte xByte, byte yByte) {
 }
 
 void mixColumns(word input[4]) {
-    uint8_t i;
     byte tmp1, tmp2, t;
-    for (i = 0; i < 4; ++i)
-    {
+    for (int i = 0; i < 4; ++i) {
         t = input[i][0];
         tmp1 = input[i][0] ^ input[i][1] ^ input[i][2] ^ input[i][3];
-        tmp2 = input[i][0] ^ input[i][1]; tmp2 = xTime(tmp2); input[i][0] ^= tmp2 ^ tmp1;
-        tmp2 = input[i][1] ^ input[i][2]; tmp2 = xTime(tmp2); input[i][1] ^= tmp2 ^ tmp1;
-        tmp2 = input[i][2] ^ input[i][3]; tmp2 = xTime(tmp2); input[i][2] ^= tmp2 ^ tmp1;
-        tmp2 = input[i][3] ^ t; tmp2 = xTime(tmp2); input[i][3] ^= tmp2 ^ tmp1;
+        tmp2 = input[i][0] ^ input[i][1];
+        tmp2 = xTime(tmp2);
+        input[i][0] ^= tmp2 ^ tmp1;
+        tmp2 = input[i][1] ^ input[i][2];
+        tmp2 = xTime(tmp2);
+        input[i][1] ^= tmp2 ^ tmp1;
+        tmp2 = input[i][2] ^ input[i][3];
+        tmp2 = xTime(tmp2);
+        input[i][2] ^= tmp2 ^ tmp1;
+        tmp2 = input[i][3] ^ t;
+        tmp2 = xTime(tmp2);
+        input[i][3] ^= tmp2 ^ tmp1;
     }
 }
 
-word wordXOR(word& w1, word& w2) {
+word wordXOR(word &w1, word &w2) {
     word result;
     result[0] = w1[0] ^ w2[0];
     result[1] = w1[1] ^ w2[1];
@@ -125,9 +131,40 @@ word wordXOR(word& w1, word& w2) {
 }
 
 void AESEncryption(word plaintext[4], word ciphertext[4], word roundKeys[4 * (Nr + 1)]) {
-    ciphertext[0] = wordXOR(ciphertext[0], roundKeys[0]);
-    ciphertext[1] = wordXOR(ciphertext[1], roundKeys[1]);
-    ciphertext[2] = wordXOR(ciphertext[2], roundKeys[2]);
-    ciphertext[3] = wordXOR(ciphertext[3], roundKeys[3]);
+    ciphertext[0] = wordXOR(plaintext[0], roundKeys[0]);
+    ciphertext[1] = wordXOR(plaintext[1], roundKeys[1]);
+    ciphertext[2] = wordXOR(plaintext[2], roundKeys[2]);
+    ciphertext[3] = wordXOR(plaintext[3], roundKeys[3]);
 
+    std::cout << "Round #" << 0 << std::endl;
+    for (int j = 0; j < 4; j++) {
+        std::cout << "ciphertext[" << j << "]: ";
+        std::cout << std::hex << ciphertext[j][0].to_ulong() << ciphertext[j][1].to_ulong()
+                  << ciphertext[j][2].to_ulong() << ciphertext[j][3].to_ulong();
+        std::cout << std::endl;
+    }
+
+    for (int i = 1; i < Nr; i++) {
+        subBytes(ciphertext);
+        shiftRows(ciphertext);
+        mixColumns(ciphertext);
+        ciphertext[0] = wordXOR(ciphertext[0], roundKeys[i * 4]);
+        ciphertext[1] = wordXOR(ciphertext[1], roundKeys[i * 4 + 1]);
+        ciphertext[2] = wordXOR(ciphertext[2], roundKeys[i * 4 + 2]);
+        ciphertext[3] = wordXOR(ciphertext[3], roundKeys[i * 4 + 3]);
+        std::cout << "Round #" << i << std::endl;
+        for (int j = 0; j < 4; j++) {
+            std::cout << "ciphertext[" << j << "]: ";
+            std::cout << std::hex << ciphertext[j][0].to_ulong() << ciphertext[j][1].to_ulong()
+                      << ciphertext[j][2].to_ulong() << ciphertext[j][3].to_ulong();
+            std::cout << std::endl;
+        }
+    }
+
+    subBytes(ciphertext);
+    shiftRows(ciphertext);
+    ciphertext[0] = wordXOR(ciphertext[0], roundKeys[Nr * 4]);
+    ciphertext[1] = wordXOR(ciphertext[1], roundKeys[Nr * 4 + 1]);
+    ciphertext[2] = wordXOR(ciphertext[2], roundKeys[Nr * 4 + 2]);
+    ciphertext[3] = wordXOR(ciphertext[3], roundKeys[Nr * 4 + 3]);
 }
