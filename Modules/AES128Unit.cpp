@@ -144,6 +144,11 @@ void AESEncryption(word plaintext[4], word ciphertext[4], word roundKeys[4 * (Nr
 
     for (int i = 1; i < Nr; i++) {
         subBytes(ciphertext);
+        std::cout << "Round #" << i << " subBytes:" << std::endl;
+        for (int j = 0; j < 4; j++) {
+            std::cout << "ciphertext[" << j << "]: ";
+            printWord(ciphertext[j]);
+        }
         shiftRows(ciphertext);
         mixColumns(ciphertext);
         ciphertext[0] = wordXOR(ciphertext[0], roundKeys[i * 4]);

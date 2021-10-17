@@ -10,13 +10,7 @@
 #include <array>
 #include <bitset>
 #include "../Debug/DebugPrint.h"
-
-// 8-bit bitset
-typedef std::bitset<8> byte;
-
-// 4 element array of byte (8-bit bitset)
-//typedef std::bitset<32> word;
-typedef std::array<byte, 4> word;
+#include "../Common/Byte.h"
 
 // The length of key related to 32-bit, in 128-bit key, Nk = 4
 const int Nk = 4;
